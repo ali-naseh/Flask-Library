@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="container">
+        <h2>Book: {{ book.title }}</h2>
+        <hr>
+        <div class="row mt-4">
+
+            <div class="col-8">
+                <div class="card">
+                    <img class="card-img-top" src="{{ url_for('static',filename=book.thumbnail) }}"
+                         width="500"
+                         height="400" alt="Card image cap">
+                    <div class="card-body">
+                        <h6 class="card-title text-primary">{{ book.title }}</h6>
+                        <p class="card-text">{{ book.description }}</p>
+                        <hr>
+                        {#                        {% if user_book %}#}
+                        {#                            {% for ubook in user_book %}#}
+                        {#                                {% if ubook.book == book.id %}#}
+                        {#                                    <form action="{{ url_for('book.return_back',id=book.id) }}" method="post">#}
+                        {#                                        <button type="submit" class="btn btn-outline-warning w-100">Return Book</button>#}
+                        {#                                    </form>#}
+                        {#                                {% endif %}#}
+                        {#                            {% endfor %}#}
+                        {#                        {% else %}#}
+                        {#                        <form action="{{ url_for('book.borrow',id=book.id) }}" method="post">#}
+                        {#                            <button type="submit" class="btn btn-outline-primary w-100">Borrow</button>#}
+                        {#                        </form>#}
+                        {#                        {% endif %}#}
+                        {% if stat %}
+                            <form action="{{ url_for('book.return_back',id=book.id) }}" method="post">
+                                <button type="submit" class="btn btn-outline-warning w-100">Return Book</button>
+                            </form>
+                        {% else %}
+                            <form action="{{ url_for('book.borrow',id=book.id) }}" method="post">
+                                <button type="submit" class="btn btn-outline-primary w-100">Borrow</button>
+                            </form>
+                        {% endif %}
+
+
+                    </div>
+                    <div class="card-footer">
+                        {{ moment(book.published_at).fromNow() }}
+                        |
+                        <b>Quantity:<span class="pl-3">{{ book.quantity }}</span></b>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 border bg-white">
+                <div class="mt-3">
+                    <div class="input-group mb-4">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text text-primary" id="basic-addon1">Category</span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="{{ book.get_category() }}"
+                               aria-label="Username"
+                               aria-describedby="basic-addon1" readonly>
+                    </div>
+
+                    <div class="input-group mb-4">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text text-primary" id="basic-addon1">Author</span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="{{ book.author }}"
+                               aria-label="Username"
+                               aria-describedby="basic-addon1" readonly>
+                    </div>
+                    <div class="input-group mb-4">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text text-primary" id="basic-addon1">Published Date</span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="{{ book.published_at.date() }}"
+                               aria-label="Username"
+                               aria-describedby="basic-addon1" readonly>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

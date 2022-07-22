@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row mt-4">
+            {% include './admin/menu.html' %}
+            <div class="col-9">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Date Joined</th>
+                        <th scope="col">Options</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <th scope="row">{{ loop.index }}</th>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.time_created }}</td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a href="{{ url_for('admin.edit_user') }}?id={{ user.id }}"
+                                       class="btn btn-info btn-sm">Edit</a>
+                                    {% if not user.is_admin %}
+                                        <form action="{{ url_for('admin.get_all_users') }}?id={{ user.id }}"
+                                              method="post">
+                                            <button type="submit" class="btn btn-danger btn-sm">Del</button>
+                                        </form>
+
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
